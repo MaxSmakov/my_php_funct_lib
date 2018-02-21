@@ -1,0 +1,11 @@
+{
+    "name": "maxsmakov/my_funct_lib",
+    "description": "My first functional PHP library",
+    "authors": [
+        {
+            "name": "MaxSmakov",
+            "email": "maxsmakov@gmail.com"
+        }
+    ],
+    "require": {}
+}
