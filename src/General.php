@@ -186,7 +186,7 @@ function allVariants($str)
  * @return int
  * @author Max Tikhomirov <maxsmakov@gmail.com>
  */
-function withoutTwoZeros($n, $l) //гениальнаое решение!!!
+function withoutTwoZeros($n, $l)
 {
     if ($n === 1) {
         return $n + $l;
