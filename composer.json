@@ -7,5 +7,15 @@
             "email": "maxsmakov@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+          "squizlabs/php_codesniffer": "3.*"
+      },
+    "autoload": {
+        "psr-4": {
+            "MyFunctLib\\": "src"
+        }
+    },
+  	"scripts": {
+      "phpcs": "phpcs"
+    }
 }

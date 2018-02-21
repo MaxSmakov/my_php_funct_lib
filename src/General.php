@@ -40,16 +40,16 @@ function grep($string, $pass)//первый вариант, неполный
  * @return int|bool
  * @author Max Tikhomirov <maxsmakov@gmail.com>
  */
-function rrmdir($dir)//ох и опасная же функция, ай йай ай!
+function rrmdir($dir)
 {
     if (is_file($dir)) {
         return unlink($dir);
     } else {
         $iter = new \DirectoryIterator($dir);
         foreach ($iter as $item) {
-              if (!$item->isDot()) {
+            if (!$item->isDot()) {
                 rrmdir($item->getPathname());
-              }
+            }
         }
         return rmdir($dir);
     }
@@ -77,9 +77,9 @@ function boolToString($item)
 }
 
 /**
- * Возвращает переданный бул true или false в виде строки 'true' или 'false'
+ * Возвращает расширение файла
  *
- * @param string $item
+ * @param string $path
  *
  * @return string
  * @author Max Tikhomirov <maxsmakov@gmail.com>
@@ -90,18 +90,29 @@ function getExtension($path)
     return $info->getExtension();
 }
 
-function rest($key, $arr) //удаляет элемент массива по ключу и возвращает то, что осталось
+/**
+ * Удаляет элемент массива по ключу и возвращает то, что осталось -
+ * пронумерованный заново массив
+ *
+ * @param int|string $key
+ * @param array      $arr
+ *
+ * @return array
+ * @author Max Tikhomirov <maxsmakov@gmail.com>
+ */
+function rest($key, $arr)
 {
     unset($arr[$key]);
     return array_values($arr);
 }
 
 /**
- * Возвращает переданный бул true или false в виде строки 'true' или 'false'
+ * Удаляет повторяющиеся значиния в массиве, возвращает заново пронумерованный
+ * массив
  *
- * @param string $item
+ * @param array $arr
  *
- * @return string
+ * @return array
  * @author Max Tikhomirov <maxsmakov@gmail.com>
  */
 function uniq($arr)
@@ -117,11 +128,11 @@ function uniq($arr)
 }
 
 /**
- * Возвращает переданный бул true или false в виде строки 'true' или 'false'
+ * Делает из вложенного массива один массив.
  *
- * @param string $item
+ * @param array $arr
  *
- * @return string
+ * @return array
  * @author Max Tikhomirov <maxsmakov@gmail.com>
  */
 function flatten($arr)
@@ -138,19 +149,20 @@ function flatten($arr)
 }
 
 /**
- * Возвращает переданный бул true или false в виде строки 'true' или 'false'
+ * Возвращает массив, где значения - все возможные перестановки символов
+ * в переданной строке. Не доделана (уникальность)
  *
- * @param string $item
+ * @param string $str
  *
- * @return string
+ * @return array
  * @author Max Tikhomirov <maxsmakov@gmail.com>
  */
-function allVariants($str) //нет проверки на уникальность(((
+function allVariants($str)
 {
     $arr = str_split($str);
     $acc = [];
     $iter = function ($arr, $parents) use (&$iter, $acc) {
-        foreach ($arr as $key=>$val) {
+        foreach ($arr as $key => $val) {
             $rest = rest($key, $arr);
             if (count($rest) === 1) {
                 $acc[] = $parents . $val . implode($rest);
@@ -164,18 +176,27 @@ function allVariants($str) //нет проверки на уникальност
 }
 
 /**
- * Возвращает переданный бул true или false в виде строки 'true' или 'false'
+ * $n - количество нулей, $l - единиц в строке
+ * Функция возвращает число всех возможный перестановок, при которых
+ * нули не соседствуют.
  *
- * @param string $item
+ * @param int $n
+ * @param int $l
  *
- * @return string
+ * @return int
  * @author Max Tikhomirov <maxsmakov@gmail.com>
  */
-function withoutTwoZeros($n ,$l) //гениальнаое решение!!!
+function withoutTwoZeros($n, $l) //гениальнаое решение!!!
 {
-    if ($n === 1) return $n + $l;
-    if ($n === $l + 1) return 1;
-    if ($n <= 0 || $l < 0) return 0;
+    if ($n === 1) {
+        return $n + $l;
+    }
+    if ($n === $l + 1) {
+        return 1;
+    }
+    if ($n <= 0 || $l < 0) {
+        return 0;
+    }
     $result = 0;
     for ($i = $l - 1; $i >= $n - 2; $i--) {
         $result += withoutTwoZeros($n - 1, $i);
@@ -184,16 +205,21 @@ function withoutTwoZeros($n ,$l) //гениальнаое решение!!!
 }
 
 /**
- * Возвращает переданный бул true или false в виде строки 'true' или 'false'
+ * Меняет местами $key1 и $key2 в массиве $arr.
+ * Возвращает заново пронумерованный масиив. Не доделана (Нет проверки)
  *
- * @param string $item
+ * @param array $arr
+ * @param int   $key1
+ * @param int   $key2
  *
- * @return string
+ * @return array
  * @author Max Tikhomirov <maxsmakov@gmail.com>
  */
-function swapArr($arr, $key1, $key2)//меняет местами $key1 и $key2 Не доделана (Нет проверки)
+function swapArr($arr, $key1, $key2)
 {
-    if ($key2 - 1 > count($arr)) return;
+    if ($key2 - 1 > count($arr)) {
+        return;
+    }
     $from = $arr[$key1];
     $to = $arr[$key2];
     $arr[$key1] = $to;
@@ -202,14 +228,17 @@ function swapArr($arr, $key1, $key2)//меняет местами $key1 и $key2
 }
 
 /**
- * Возвращает переданный бул true или false в виде строки 'true' или 'false'
+ * Меняет местами $key1 и $key2 в строке $str.
+ * Возвращает строку. Не доделана (Нет проверки)
  *
- * @param string $item
+ * @param int|string $value
+ * @param int        $key1
+ * @param int        $key2
  *
  * @return string
  * @author Max Tikhomirov <maxsmakov@gmail.com>
  */
-function swapStr($value, $key1, $key2)//меняет местами $key1 и $key2 Не доделана (Нет проверки)
+function swapStr($value, $key1, $key2)
 {
     $str = str_split(strval($value));
     $from = $str[$key1];
