@@ -11,6 +11,9 @@
           "squizlabs/php_codesniffer": "3.*"
       },
     "autoload": {
+        "psr-4": {
+            "MyFunctLib\\": "src"
+        },
       "files": ["src/General.php"]
     },
   	"scripts": {
